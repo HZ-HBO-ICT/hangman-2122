@@ -1,62 +1,18 @@
-window.addEventListener("load", init);
-
-//Global variables
-const words: string[] = ["jamstack", "paper", "macbookpro", "wuppo"];
+// Global variables
+const words: string[] = ['jamstack', 'paper', 'macbookpro', 'wuppo'];
 let word: string;
-let lettersOfWord: string[];
-let guessedLettersOfWord: string[] = [];
-const lettersInDOM: HTMLDivElement = document.querySelector("#letters");
-const attemptInDOM: HTMLDivElement = document.querySelector("#attempt");
+const guessedCharactersInWord: string[] = [];
+const charactersInDOM: HTMLDivElement = document.querySelector('#letters');
+const attemptInDOM: HTMLDivElement = document.querySelector('#attempt');
+const attempts = 5;
 
 /**
- * Function to initialize the programme
- */
-function init() {
-  //write the alphabet keyboard to the DOM
-  writeAlphabetToTheDom();
-  //choose a word
-  setWord(words[randomNumber(0, words.length)]);
-  console.log(word);
-  //transform the word into an array of strings (letters)
-  splitWordInCharacters();
-  //some debugging
-  writeGuessedWordToTheDOM();
-}
-
-/**
- * Function to split a word in Characters and replace it with dashes.
+ * Add dashed to the guessedCharacters in word.
  */
 function splitWordInCharacters() {
-  lettersOfWord = word.split("");
-  //push - to another array where the guessed letters are stored, begin with dashes
-  for (let i = 0; i < word.length; i++) {
-    guessedLettersOfWord.push("-");
+  for (let i = 0; i < word.length; i += 1) {
+    guessedCharactersInWord.push('-');
   }
-}
-
-/**
- * Function to handle the click event
- * @param e {event} - click event
- */
-function guessLetter(e: Event) {
-  //the target element where the user clicked
-  const target: HTMLElement = e.target as HTMLElement;
-  //the letter where the user clicked on
-  let letter: string = target.id;
-  console.log(letter);
-  // check to see if the letter (and not some other element) is clicked on
-  writeGuessedWordToTheDOM();
-}
-
-/**
- * Function to add a clicked letter to the GuessedWord array
- * @param indexArray
- * @param letter
- */
-function addLetterToGuessedWord(indexArray: number[], letter: string) {
-  indexArray.forEach(function (element) {
-    guessedLettersOfWord[element] = letter;
-  });
 }
 
 /**
@@ -68,28 +24,48 @@ function setWord(newWord: string) {
 }
 
 /**
+ * Function to write the attempts to the DOM
+ */
+function writeAttemptToTheDOM() {
+  attemptInDOM.innerHTML = String(attempts);
+}
+
+/**
  * Function to write the ghuessed letters to the DOM
  */
 function writeGuessedWordToTheDOM() {
-  lettersInDOM.innerHTML = "";
-  guessedLettersOfWord.forEach((letter) => {
+  charactersInDOM.innerHTML = '';
+  guessedCharactersInWord.forEach((letter) => {
     console.log(letter);
-    let li = document.createElement("li");
+    const li = document.createElement('li');
     li.innerText = letter;
-    lettersInDOM.append(li);
+    charactersInDOM.append(li);
   });
 }
+
+/**
+ * Function to handle the click event
+ * @param e {event} - click event
+ */
+function guessLetter(e: Event) {
+  // the target element where the user clicked
+  const target: HTMLElement = e.target as HTMLElement;
+  // the letter where the user clicked on
+  const letter: string = target.id;
+  console.log(letter);
+}
+
 /**
  * Function to write the alphabet keyboard to the DOM
  */
 function writeAlphabetToTheDom() {
-  const alphabet: string[] = "abcdefghijklmnopqrstuvwxyz".split("");
-  const keyboard: HTMLDivElement = document.querySelector("#keyboard");
-  keyboard.addEventListener("click", guessLetter);
-  alphabet.forEach(function (element, index) {
-    let divKey: HTMLDivElement = document.createElement("div");
+  const alphabet: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const keyboard: HTMLDivElement = document.querySelector('#keyboard');
+  keyboard.addEventListener('click', guessLetter);
+  alphabet.forEach((element) => {
+    const divKey: HTMLDivElement = document.createElement('div');
     divKey.id = element;
-    divKey.classList.add("key");
+    divKey.classList.add('key');
     divKey.innerHTML = element;
     keyboard.append(divKey);
   });
@@ -103,3 +79,19 @@ function writeAlphabetToTheDom() {
 function randomNumber(min: number, max: number): number {
   return Math.round(Math.random() * (max - min) + min);
 }
+
+/**
+ * Function to initialize the programme
+ */
+function init() {
+  // write the alphabet keyboard to the DOM
+  writeAlphabetToTheDom();
+  // choose a word
+  setWord(words[randomNumber(0, words.length)]);
+  console.log(word);
+  splitWordInCharacters();
+  writeAttemptToTheDOM();
+  writeGuessedWordToTheDOM();
+}
+
+window.addEventListener('load', init);

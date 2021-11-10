@@ -4,9 +4,9 @@ class Game {
 
   private word: string;
 
-  private lettersOfWord: string[];
+  private charactersInWord: string[];
 
-  private guessedLettersOfWord: string[];
+  private guessedCharactersInWord: string[];
 
   private lettersInDOM: HTMLDivElement;
 
@@ -18,7 +18,7 @@ class Game {
   constructor() {
     // class properties initialized
     this.words = ['jamstack', 'paper', 'macbookpro', 'wuppo'];
-    this.guessedLettersOfWord = [];
+    this.guessedCharactersInWord = [];
     this.lettersInDOM = document.querySelector('#letters');
     this.attemptInDOM = document.querySelector('#attempt');
     this.attempts = 5;
@@ -31,7 +31,7 @@ class Game {
     this.splitWordInCharacters();
     // some debugging
     console.log(this.word);
-    console.log(this.guessedLettersOfWord);
+    console.log(this.guessedCharactersInWord);
     // write the amount of attempts to the DOM
     this.writeAttemptToTheDOM();
     // write the letters in the guessed word array to the DOM
@@ -42,10 +42,10 @@ class Game {
    * Function to split a word in Characters and replace it with dashes.
    */
   private splitWordInCharacters() {
-    this.lettersOfWord = this.word.split('');
+    this.charactersInWord = this.word.split('');
     // push - to another array where the guessed letters are stored, begin with dashes
     for (let i = 0; i < this.word.length; i += 1) {
-      this.guessedLettersOfWord.push('-');
+      this.guessedCharactersInWord.push('-');
     }
   }
 
@@ -57,7 +57,7 @@ class Game {
   private findLetters(clickedLetter: string): number[] {
     // on what index is the letter
     const indexOfLetters: number[] = [];
-    this.lettersOfWord.forEach((letterInArray: string, index: number) => {
+    this.charactersInWord.forEach((letterInArray: string, index: number) => {
       if (clickedLetter === letterInArray) {
         indexOfLetters.push(index);
       }
@@ -108,7 +108,7 @@ class Game {
    */
   private addLetterToGuessedWord(indexArray: number[], letter: string) {
     indexArray.forEach((element) => {
-      this.guessedLettersOfWord[element] = letter;
+      this.guessedCharactersInWord[element] = letter;
     });
   }
 
@@ -131,8 +131,8 @@ class Game {
    * Function to check if the users guessed the word right
    */
   private checkWinner() {
-    console.log(`${this.word} is ${this.guessedLettersOfWord.join('')}`);
-    if (this.word === this.guessedLettersOfWord.join('')) {
+    console.log(`${this.word} is ${this.guessedCharactersInWord.join('')}`);
+    if (this.word === this.guessedCharactersInWord.join('')) {
       this.lettersInDOM.classList.add('winner');
     } else if (this.attempts === 0) {
       this.lettersInDOM.classList.add('lost');
@@ -148,7 +148,7 @@ class Game {
    */
   private writeGuessedWordToTheDOM() {
     this.lettersInDOM.innerHTML = '';
-    this.guessedLettersOfWord.forEach((letter) => {
+    this.guessedCharactersInWord.forEach((letter) => {
       console.log(letter);
       const li = document.createElement('li');
       li.innerText = letter;
